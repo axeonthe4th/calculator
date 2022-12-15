@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class LightTheme {
-  ThemeData theme = ThemeData(
+class ProjectTheme {
+  static ThemeData lightTheme = ThemeData(
       appBarTheme: const AppBarTheme(
         color: Colors.deepPurple,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
         ),
       ),
-      scaffoldBackgroundColor: Colors.white.withOpacity(0.8),
+      scaffoldBackgroundColor: Colors.white.withOpacity(0.9),
       buttonTheme: const ButtonThemeData(
         colorScheme: ColorScheme.light(
             onPrimary: Colors.deepPurple, onSecondary: Colors.cyan),
