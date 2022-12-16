@@ -1,10 +1,13 @@
+import 'dart:developer';
+
 import "package:flutter/material.dart";
 import 'package:math_expressions/math_expressions.dart';
 import '../home.dart';
 
 abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
   late String calculatingTable;
-  final String symbols = "+-*/";
+  final String symbols = "+-*/^";
+  final String numbers = "0123456789";
   late dynamic result;
 
   @override
@@ -42,14 +45,24 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
       true;
     } else if (calculatingTable.isEmpty) {
       addElement(operator);
-    } else if (calculatingTable[0] == "-" &&
-        calculatingTable.length > 1 &&
-        symbols.contains(operator)) {
-      if (symbols.contains(calculatingTable[calculatingTable.length - 1])) {
-        replaceElement(operator);
-      } else {
+    } else if (calculatingTable[0] == "-") {
+      if (symbols.contains(operator)) {
+        if (symbols.contains(calculatingTable[calculatingTable.length - 1])) {
+          if (calculatingTable.length > 1) {
+            replaceElement(operator);
+          } else {
+            true;
+          }
+        } else if (numbers
+            .contains(calculatingTable[calculatingTable.length - 1])) {
+          addElement(operator);
+        }
+      } else if (numbers.contains(operator)) {
         addElement(operator);
       }
+    } else if (calculatingTable.isNotEmpty &&
+        symbols.contains(calculatingTable[calculatingTable.length - 1])) {
+      replaceElement(operator);
     } else {
       addElement(operator);
     }
@@ -86,3 +99,24 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
     });
   }
 }
+
+// void evaluateCircumstances(String operator) {
+//     if ((calculatingTable.isEmpty || symbols.contains(calculatingTable[0])) &&
+//         ((calculatingTable.isEmpty &&
+//             (operator == "+" || operator == "*" || operator == "/")))) {
+//       true;
+//     } else if (calculatingTable.isEmpty) {
+//       addElement(operator);
+//     } else if (calculatingTable[0] == "-" &&
+//         calculatingTable.length > 1 &&
+//         symbols.contains(operator)) {
+//       if (symbols.contains(calculatingTable[calculatingTable.length - 1])) {
+//         replaceElement(operator);
+//       } else {
+//         addElement(operator);
+//       }
+//     } else {
+//       addElement(operator);
+//     }
+//     print(calculatingTable);
+//   }
