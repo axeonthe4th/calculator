@@ -1,5 +1,8 @@
+import 'package:calculator/elements/text/texts.dart';
 import 'package:flutter/material.dart';
-import 'package:math_expressions/math_expressions.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'elements/widget/widgets.dart';
+import 'logic/functions.dart';
 
 class MyCalculatorHomePage extends StatefulWidget {
   const MyCalculatorHomePage({super.key});
@@ -8,118 +11,31 @@ class MyCalculatorHomePage extends StatefulWidget {
   State<MyCalculatorHomePage> createState() => _MyCalculatorHomePageState();
 }
 
-class _MyCalculatorHomePageState extends State<MyCalculatorHomePage> {
-  late String calculatingTable;
-  final String symbols = "+-*/";
-  final String numbers = "0123456789";
-  late dynamic result;
-
-  @override
-  void initState() {
-    super.initState();
-    calculatingTable = "";
-    result = "";
-  }
-
-  void addElement(String element) {
-    setState(() {
-      calculatingTable += element;
-    });
-  }
-
-  void deleteAllElement() {
-    setState(() {
-      calculatingTable = "";
-    });
-  }
-
-  void deleteSingleElement() {
-    setState(() {
-      calculatingTable != ""
-          ? calculatingTable =
-              calculatingTable.substring(0, calculatingTable.length - 1)
-          : true;
-    });
-  }
-
-  void evaluateCircumstances(String operator) {
-    calculatingTable.isEmpty
-        ? addElement(operator)
-        : (symbols.contains(calculatingTable[calculatingTable.length - 1])
-            ? replaceElement(operator)
-            : addElement(operator));
-  }
-
-  void replaceElement(String element) {
-    setState(() {
-      if (symbols.contains(element) &&
-          symbols.contains(calculatingTable[calculatingTable.length - 1])) {
-        List<String> tempTable = calculatingTable.split("");
-        tempTable.removeLast();
-        tempTable.add(element);
-        String calculatingTable2 = "";
-        for (int i = 0; i < tempTable.length; i++) {
-          calculatingTable2 += tempTable[i];
-        }
-        calculatingTable = calculatingTable2;
-      }
-    });
-  }
-
-  void calculateResult() {
-    // calculatingTable = calculatingTable.replaceAll('×', '*');
-    // calculatingTable = calculatingTable.replaceAll('÷', '/');
-    setState(() {
-      try {
-        Parser p = Parser();
-        Expression exp = p.parse(calculatingTable);
-
-        ContextModel cm = ContextModel();
-        result = '${exp.evaluate(EvaluationType.REAL, cm)}';
-      } catch (e) {
-        result = "not completed";
-      }
-    });
-  }
-
+class _MyCalculatorHomePageState extends DefaultFunctions {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Center(child: Text("Calculator")),
+          title: Center(child: Texts.titleText),
         ),
         body: Column(children: [
           Expanded(
               flex: 2,
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Expanded(
-                    child: Container(
-                        color: Colors.white,
-                        child: Center(
-                            child: Text(
-                          calculatingTable,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline1
-                              ?.copyWith(
-                                  fontSize: 50, fontWeight: FontWeight.w300),
-                        ))))
-              ])),
+              child: Container(
+                  color: Colors.white,
+                  child: Center(
+                      child: Text(
+                    calculatingTable,
+                    style: GoogleFonts.assistant(fontSize: 35),
+                  )))),
           Expanded(
               flex: 1,
               child: Center(
                   child: Text(
                 result ?? "",
-                style: result is int
-                    ? Theme.of(context)
-                        .textTheme
-                        .headline1
-                        ?.copyWith(fontSize: 50, fontWeight: FontWeight.w300)
-                    : Theme.of(context)
-                        .textTheme
-                        .headline1
-                        ?.copyWith(fontSize: 37, fontWeight: FontWeight.w300),
+                style: (result is double || result is int)
+                    ? GoogleFonts.assistant(fontSize: 35)
+                    : GoogleFonts.assistant(fontSize: 35),
               ))),
           Expanded(
               flex: 4,
@@ -257,43 +173,5 @@ class _MyCalculatorHomePageState extends State<MyCalculatorHomePage> {
                         ]),
                       ])))
         ]));
-  }
-}
-
-class DefaultOperatorSection extends StatelessWidget {
-  DefaultOperatorSection({Key? key, required this.element}) : super(key: key);
-
-  late String element;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 75,
-        width: element == "=" ? 152 : 75,
-        color: Colors.white,
-        child: Center(
-            child: Text(element,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline1
-                    ?.copyWith(fontSize: 30, fontWeight: FontWeight.w300))));
-  }
-}
-
-class DefaultNumberSection extends StatelessWidget {
-  DefaultNumberSection({Key? key, required this.number}) : super(key: key);
-
-  late dynamic number;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 75,
-        width: 75,
-        color: Colors.orange,
-        child: Center(
-            child: Text("$number",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline1
-                    ?.copyWith(fontSize: 30, fontWeight: FontWeight.w300))));
   }
 }
