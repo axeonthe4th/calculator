@@ -31,10 +31,13 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
 
   void deleteSingleElement() {
     setState(() {
-      calculatingTable != ""
-          ? calculatingTable =
-              calculatingTable.substring(0, calculatingTable.length - 1)
-          : true;
+      calculatingTable.endsWith("^(1/2)")
+          ? (calculatingTable =
+              calculatingTable.substring(0, calculatingTable.length - 6))
+          : (calculatingTable != ""
+              ? calculatingTable =
+                  calculatingTable.substring(0, calculatingTable.length - 1)
+              : true);
     });
   }
 

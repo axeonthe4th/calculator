@@ -1,4 +1,5 @@
-import 'package:calculator/elements/text/texts.dart';
+import 'package:calculator/elements/ui/styles.dart';
+import 'package:calculator/elements/ui/images.dart';
 import 'package:flutter/material.dart';
 import 'elements/widget/widgets.dart';
 import 'logic/functions.dart';
@@ -92,7 +93,15 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                                   onTap: () {
                                     evaluateCircumstances("+");
                                   },
-                                  child: DefaultOperatorSection(element: "sin"))
+                                  child: Container(
+                                      color: Colors.white,
+                                      height: 75,
+                                      width: 75,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            evaluateCircumstances("^(1/2)");
+                                          },
+                                          icon: Images.rootImage)))
                             ]),
                         const Divider(height: 2),
                         Row(
@@ -126,7 +135,7 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                                   onTap: () {
                                     evaluateCircumstances("+");
                                   },
-                                  child: DefaultOperatorSection(element: "cos"))
+                                  child: DefaultOperatorSection(element: ""))
                             ]),
                         const Divider(height: 2),
                         Row(
@@ -160,7 +169,7 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                                   onTap: () {
                                     evaluateCircumstances("+");
                                   },
-                                  child: DefaultOperatorSection(element: "tan"))
+                                  child: DefaultOperatorSection(element: ""))
                             ]),
                         const Divider(height: 2),
                         Row(
@@ -193,7 +202,7 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                                   onTap: () {
                                     evaluateCircumstances("+");
                                   },
-                                  child: DefaultOperatorSection(element: "cot"))
+                                  child: DefaultOperatorSection(element: ""))
                             ])
                       ])))
         ]));

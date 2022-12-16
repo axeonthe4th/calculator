@@ -1,6 +1,6 @@
 import 'package:calculator/home.dart';
 import 'package:flutter/material.dart';
-import 'elements/ui/light_theme.dart';
+import 'elements/theme/light_theme.dart';
 
 void main() {
   runApp(const MyApp());

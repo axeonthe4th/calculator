@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../text/texts.dart';
+import '../ui/styles.dart';
 
 class AppBarTitle extends StatelessWidget {
   const AppBarTitle({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Texts.titleText);
+    return Center(child: Text("Calculator", style: TextStyles.titleTextStyle));
   }
 }
 
@@ -25,8 +24,8 @@ class CalculatingTable extends StatelessWidget {
         child: Container(
             color: Colors.white,
             child: Center(
-                child: Text(calculatingTable,
-                    style: GoogleFonts.assistant(fontSize: 35)))));
+                child:
+                    Text(calculatingTable, style: TextStyles.tableTextStyle))));
   }
 }
 
@@ -54,8 +53,8 @@ class DefaultOperatorSection extends StatelessWidget {
         height: 75,
         width: element == "=" ? 152 : 75,
         color: Colors.white,
-        child: Center(
-            child: Text(element, style: GoogleFonts.assistant(fontSize: 40))));
+        child:
+            Center(child: Text(element, style: TextStyles.operatorTextStyle)));
   }
 }
 
@@ -69,8 +68,7 @@ class DefaultNumberSection extends StatelessWidget {
         height: 75,
         width: 75,
         color: Colors.orange,
-        child: Center(
-            child:
-                Text("$number", style: GoogleFonts.assistant(fontSize: 40))));
+        child:
+            Center(child: Text("$number", style: TextStyles.numberTextStyle)));
   }
 }
