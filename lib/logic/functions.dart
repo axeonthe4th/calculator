@@ -19,7 +19,11 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
 
   void addElement(String element) {
     setState(() {
-      calculatingTable += element;
+      (numbers.contains(element) &&
+              calculatingTable.startsWith("-(") &&
+              calculatingTable.endsWith(")"))
+          ? true
+          : calculatingTable += element;
     });
   }
 
@@ -31,13 +35,20 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
 
   void deleteSingleElement() {
     setState(() {
-      calculatingTable.endsWith("^(1/2)")
-          ? (calculatingTable =
-              calculatingTable.substring(0, calculatingTable.length - 6))
-          : (calculatingTable != ""
-              ? calculatingTable =
-                  calculatingTable.substring(0, calculatingTable.length - 1)
-              : true);
+      if (calculatingTable.endsWith("^(1/2)")) {
+        calculatingTable =
+            calculatingTable.substring(0, calculatingTable.length - 6);
+      } else if (calculatingTable.startsWith("-(") &&
+          calculatingTable.endsWith(")")) {
+        calculatingTable =
+            calculatingTable.substring(0, calculatingTable.length - 1);
+        calculatingTable = calculatingTable.substring(2);
+      } else if (calculatingTable != "") {
+        calculatingTable =
+            calculatingTable.substring(0, calculatingTable.length - 1);
+      } else {
+        true;
+      }
     });
   }
 
@@ -47,8 +58,8 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
             (operator == "+" || operator == "*" || operator == "/")))) {
       true;
     } else if (calculatingTable.isEmpty) {
-      addElement(operator);
-    } else if (calculatingTable[0] == "-") {
+      operator != "negative" ? addElement(operator) : true;
+    } else if (calculatingTable[0] == "-" && calculatingTable.length == 1) {
       if (symbols.contains(operator)) {
         if (symbols.contains(calculatingTable[calculatingTable.length - 1])) {
           if (calculatingTable.length > 1) {
@@ -66,6 +77,30 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
     } else if (calculatingTable.isNotEmpty &&
         symbols.contains(calculatingTable[calculatingTable.length - 1])) {
       replaceElement(operator);
+    } else if (operator == "negative" && calculatingTable.isNotEmpty) {
+      String tempString = "-(";
+      if (calculatingTable[0] == "-" &&
+          calculatingTable[1] == "(" &&
+          calculatingTable.endsWith("^(1/2)")) {
+        setState(() {
+          tempString += calculatingTable;
+          tempString += ")";
+          calculatingTable = tempString;
+        });
+      } else if (calculatingTable[0] == "-" &&
+          calculatingTable[1] == "(" &&
+          calculatingTable[calculatingTable.length - 1] == ")") {
+        setState(() {
+          calculatingTable =
+              calculatingTable.substring(2, calculatingTable.length - 1);
+        });
+      } else {
+        setState(() {
+          tempString += calculatingTable;
+          tempString += ")";
+          calculatingTable = tempString;
+        });
+      }
     } else {
       addElement(operator);
     }
@@ -102,24 +137,3 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
     });
   }
 }
-
-// void evaluateCircumstances(String operator) {
-//     if ((calculatingTable.isEmpty || symbols.contains(calculatingTable[0])) &&
-//         ((calculatingTable.isEmpty &&
-//             (operator == "+" || operator == "*" || operator == "/")))) {
-//       true;
-//     } else if (calculatingTable.isEmpty) {
-//       addElement(operator);
-//     } else if (calculatingTable[0] == "-" &&
-//         calculatingTable.length > 1 &&
-//         symbols.contains(operator)) {
-//       if (symbols.contains(calculatingTable[calculatingTable.length - 1])) {
-//         replaceElement(operator);
-//       } else {
-//         addElement(operator);
-//       }
-//     } else {
-//       addElement(operator);
-//     }
-//     print(calculatingTable);
-//   }

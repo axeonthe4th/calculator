@@ -3,6 +3,7 @@ import 'package:calculator/elements/ui/images.dart';
 import 'package:flutter/material.dart';
 import 'elements/widget/widgets.dart';
 import 'logic/functions.dart';
+import "dart:math";
 
 class MyCalculatorHomePage extends StatefulWidget {
   const MyCalculatorHomePage({super.key});
@@ -91,17 +92,13 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                               const Divider(indent: 2),
                               InkWell(
                                   onTap: () {
-                                    evaluateCircumstances("+");
+                                    evaluateCircumstances("^(1/2)");
                                   },
                                   child: Container(
                                       color: Colors.white,
                                       height: 75,
                                       width: 75,
-                                      child: IconButton(
-                                          onPressed: () {
-                                            evaluateCircumstances("^(1/2)");
-                                          },
-                                          icon: Images.rootImage)))
+                                      child: Images.rootImage))
                             ]),
                         const Divider(height: 2),
                         Row(
@@ -133,9 +130,9 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                               const Divider(indent: 2),
                               InkWell(
                                   onTap: () {
-                                    evaluateCircumstances("+");
+                                    evaluateCircumstances("negative");
                                   },
-                                  child: DefaultOperatorSection(element: ""))
+                                  child: DefaultOperatorSection(element: "+/-"))
                             ]),
                         const Divider(height: 2),
                         Row(
@@ -167,9 +164,13 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                               const Divider(indent: 2),
                               InkWell(
                                   onTap: () {
-                                    evaluateCircumstances("+");
+                                    addElement("$pi");
                                   },
-                                  child: DefaultOperatorSection(element: ""))
+                                  child: Container(
+                                      color: Colors.white,
+                                      height: 75,
+                                      width: 75,
+                                      child: Images.piImage))
                             ]),
                         const Divider(height: 2),
                         Row(
@@ -200,9 +201,9 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                               const Divider(indent: 2),
                               InkWell(
                                   onTap: () {
-                                    evaluateCircumstances("+");
+                                    addElement("$e");
                                   },
-                                  child: DefaultOperatorSection(element: ""))
+                                  child: DefaultOperatorSection(element: "e"))
                             ])
                       ])))
         ]));
