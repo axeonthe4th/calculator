@@ -177,7 +177,7 @@ class _MyCalculatorHomePageState extends DefaultFunctions {
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       InkWell(
                           onTap: () {
-                            calculateResult();
+                            setEquality();
                           },
                           child: DefaultOperatorSection(element: "=")),
                       const Divider(indent: 2),

@@ -10,7 +10,7 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage>
   late String calculatingTable;
   final String symbols = "+-*/^";
   final String numbers = "0123456789";
-  late dynamic result;
+  late String result;
   late final AnimationController controller;
   static bool isLight = false;
 
@@ -47,8 +47,10 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage>
         true;
       } else if (element == "$pi" || element == "$e") {
         calculatingTable += element.substring(0, 4);
+        calculateResult();
       } else {
         calculatingTable += element;
+        calculateResult();
       }
     });
   }
@@ -64,14 +66,17 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage>
       if (calculatingTable.endsWith("^(1/2)")) {
         calculatingTable =
             calculatingTable.substring(0, calculatingTable.length - 6);
+        calculateResult();
       } else if (calculatingTable.startsWith("-(") &&
           calculatingTable.endsWith(")")) {
         calculatingTable =
             calculatingTable.substring(0, calculatingTable.length - 1);
         calculatingTable = calculatingTable.substring(2);
+        calculateResult();
       } else if (calculatingTable != "") {
         calculatingTable =
             calculatingTable.substring(0, calculatingTable.length - 1);
+        calculateResult();
       } else {
         true;
       }
@@ -112,6 +117,7 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage>
           tempString += calculatingTable;
           tempString += ")";
           calculatingTable = tempString;
+          calculateResult();
         });
       } else if (calculatingTable[0] == "-" &&
           calculatingTable[1] == "(" &&
@@ -119,12 +125,14 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage>
         setState(() {
           calculatingTable =
               calculatingTable.substring(2, calculatingTable.length - 1);
+          calculateResult();
         });
       } else {
         setState(() {
           tempString += calculatingTable;
           tempString += ")";
           calculatingTable = tempString;
+          calculateResult();
         });
       }
     } else {
@@ -157,9 +165,19 @@ abstract class DefaultFunctions extends State<MyCalculatorHomePage>
         Expression exp = p.parse(calculatingTable);
         ContextModel cm = ContextModel();
         result = '${exp.evaluate(EvaluationType.REAL, cm)}';
+        if (result.endsWith(".0")) {
+          result = result.substring(0, result.length - 2);
+        }
       } catch (e) {
-        result = "not completed";
+        result = "";
       }
+    });
+  }
+
+  void setEquality() {
+    setState(() {
+      calculatingTable = result;
+      result = "";
     });
   }
 }
