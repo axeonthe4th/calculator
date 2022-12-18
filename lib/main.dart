@@ -1,9 +1,18 @@
 import 'package:calculator/home.dart';
 import 'package:flutter/material.dart';
-import 'elements/theme/light_theme.dart';
+import 'package:provider/provider.dart';
+import 'elements/theme/themes.dart';
+import 'elements/theme/theme_notifier.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<ThemeNotifier>(
+        create: (context) => ThemeNotifier(),
+      )
+    ],
+    builder: (context, child) => MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -13,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ProjectTheme.lightTheme,
+      theme: context.watch<ThemeNotifier>().currentTheme,
       home: MyCalculatorHomePage(),
     );
   }

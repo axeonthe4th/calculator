@@ -1,29 +1,55 @@
 import 'dart:developer';
+import 'dart:math';
 
 import "package:flutter/material.dart";
 import 'package:math_expressions/math_expressions.dart';
 import '../home.dart';
 
-abstract class DefaultFunctions extends State<MyCalculatorHomePage> {
+abstract class DefaultFunctions extends State<MyCalculatorHomePage>
+    with TickerProviderStateMixin {
   late String calculatingTable;
   final String symbols = "+-*/^";
   final String numbers = "0123456789";
   late dynamic result;
+  late final AnimationController controller;
+  static bool isLight = false;
 
   @override
   void initState() {
     super.initState();
+    controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
     calculatingTable = "";
     result = "";
   }
 
   void addElement(String element) {
     setState(() {
-      (numbers.contains(element) &&
-              calculatingTable.startsWith("-(") &&
-              calculatingTable.endsWith(")"))
-          ? true
-          : calculatingTable += element;
+      if (numbers.contains(element) &&
+          calculatingTable.startsWith("-(") &&
+          calculatingTable.endsWith(")")) {
+        true;
+      } else if (element == "." &&
+          (calculatingTable.isEmpty ||
+              calculatingTable.endsWith(".") ||
+              (calculatingTable.length >= 3 &&
+                  calculatingTable[calculatingTable.length - 2] == ".") ||
+              symbols.contains(calculatingTable[calculatingTable.length - 1]) ||
+              "()".contains(calculatingTable[calculatingTable.length - 1]) ||
+              calculatingTable.endsWith("2.71") ||
+              calculatingTable.endsWith("3.14"))) {
+        true;
+      } else if (calculatingTable.endsWith(")")) {
+        true;
+      } else if ((element == "$pi" || element == "$e") &&
+          (calculatingTable.endsWith("2.71") ||
+              calculatingTable.endsWith("3.14"))) {
+        true;
+      } else if (element == "$pi" || element == "$e") {
+        calculatingTable += element.substring(0, 4);
+      } else {
+        calculatingTable += element;
+      }
     });
   }
 
